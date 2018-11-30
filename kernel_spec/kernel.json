@@ -1,0 +1,5 @@
+{
+    "argv": ["dotnet", "run", "<INSTALL_PATH>/csharp-jupyter-kernel/src/CSharp.Jupyter.Kernel/bin/Debug/netcoreapp2.1/CSharp.Jupyter.Kernel.dll", "{connection_file}"],
+    "display_name": "C#",
+    "language": "csharp"
+}

@@ -7,8 +7,8 @@
 
   <ItemGroup>
     <PackageReference Include="Dotnet.Script" Version="0.28.0" />
+    <PackageReference Include="log4net" Version="2.0.8" />
     <PackageReference Include="NetMQ" Version="4.0.0.1" />
-    <PackageReference Include="SuperSocket" Version="1.6.6.1" />
   </ItemGroup>
 
 </Project>

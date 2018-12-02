@@ -17,6 +17,11 @@ namespace CSharp.Jupyter.Kernel.Sockets.IOPub
             _socket.Bind(address);
         }
 
+        public void Poll()
+        {
+            throw new NotImplementedException();
+        }
+
         public bool TryReceive(ref Msg msg, TimeSpan timeout)
         {
             return _socket.TryReceive(ref msg, timeout);

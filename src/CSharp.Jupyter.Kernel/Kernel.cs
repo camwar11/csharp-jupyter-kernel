@@ -22,6 +22,8 @@ namespace CSharp.Jupyter.Kernel
         private readonly IShellSocket _shellSocket;
         private readonly IStdinSocket _stdinSocket;
 
+        public bool Running { get; set; }
+
         public Kernel(IControlSocket controlSocket, IHeartbeatSocket heartbeatSocket, IIOPubSocket iioPubSocket, 
         IShellSocket shellSocket, IStdinSocket stdinSocket)
         {
@@ -30,6 +32,8 @@ namespace CSharp.Jupyter.Kernel
             _iioPubSocket = iioPubSocket; 
             _shellSocket = shellSocket;
             _stdinSocket = stdinSocket;
+
+            Running = true;
         }
 
         public bool Initialize(string connectionFilePath)
@@ -66,6 +70,14 @@ namespace CSharp.Jupyter.Kernel
             {
                 _log.Error("Reading connection file failed.", e);
                 return false;
+            }
+        }
+
+        public void Run()
+        {
+            while(Running)
+            {
+                _shellSocket.Poll();
             }
         }
 

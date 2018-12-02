@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using CSharp.Jupyter.Messages.KernelInfo;
 using NetMQ;
 using NetMQ.Sockets;
 
@@ -7,6 +9,8 @@ namespace CSharp.Jupyter.Kernel.Sockets.Shell
     public class ShellSocket : IShellSocket
     {
         private readonly RouterSocket _socket;
+        private Msg? _msg;
+
         public ShellSocket()
         {
             _socket = new RouterSocket();
@@ -15,6 +19,22 @@ namespace CSharp.Jupyter.Kernel.Sockets.Shell
         public void Bind(string address)
         {
             _socket.Bind(address);
+        }
+
+        public void Poll()
+        {
+            if(_msg == null)
+            {
+                _msg = new Msg();
+                _msg.Value.InitEmpty();
+            }
+
+            KernelInfoRequest infoRequest;
+
+            if(this.TryGetMessage<KernelInfoRequest, KernelInfoRequest.KernelInfoRequestContent>(out infoRequest))
+            {
+                
+            }
         }
 
         public bool TryReceive(ref Msg msg, TimeSpan timeout)

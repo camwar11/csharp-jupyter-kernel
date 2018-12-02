@@ -18,8 +18,15 @@ namespace CSharp.Jupyter.Kernel
 
         internal static void Main(string[] args)
         {
+            #if DEBUG
+            while (!System.Diagnostics.Debugger.IsAttached)
+            {
+                System.Threading.Thread.Sleep(100);
+            }
+            #endif
+
             log4net.Config.XmlConfigurator.Configure(
-                log4net.LogManager.GetRepository(Assembly.GetEntryAssembly()),
+                log4net.LogManager.GetRepository(Assembly.GetExecutingAssembly()),
                 new FileInfo("log4net.config"));
 
             if(args.Length != 1)
@@ -46,7 +53,12 @@ namespace CSharp.Jupyter.Kernel
             }
 
             _log.Debug("Kernel initialized");
+
+            kernel.Running = Running;
+            kernel.Run();
         }
+
+        internal static bool Running { get; set;}
 
         private static ServiceCollection SetUpDependencies()
         {

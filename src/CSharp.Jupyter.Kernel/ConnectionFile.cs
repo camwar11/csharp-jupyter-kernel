@@ -30,5 +30,8 @@ namespace CSharp.Jupyter.Kernel
 
         [JsonProperty("key")]
         public string Key { get; set;}
+
+        [JsonProperty("kernel_name")]
+        public string KernelName { get; set;}
     }
 }

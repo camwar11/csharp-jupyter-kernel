@@ -6,6 +6,16 @@ namespace CSharp.Jupyter.Messages.General
 {
     public abstract class GeneralMessage<T>
     {
+        public GeneralMessage()
+        {
+            RoutingPrefix = new List<string>();
+            Buffers = new List<byte[]>();
+        }
+
+        public List<string> RoutingPrefix { get; set;}
+
+        public string HMACSignature { get; set;}
+
         [JsonProperty("header")]
         public MessageHeader Header { get; set;}
 

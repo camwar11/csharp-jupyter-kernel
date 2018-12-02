@@ -1,4 +1,10 @@
 ﻿using System;
+using CSharp.Jupyter.Kernel.Sockets.Control;
+using CSharp.Jupyter.Kernel.Sockets.Heartbeat;
+using CSharp.Jupyter.Kernel.Sockets.IOPub;
+using CSharp.Jupyter.Kernel.Sockets.Shell;
+using CSharp.Jupyter.Kernel.Sockets.Stdin;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
 namespace CSharp.Jupyter.Kernel
@@ -18,11 +24,30 @@ namespace CSharp.Jupyter.Kernel
 
             string connectionFilePath = args[0];
 
-            Kernel kernel = new Kernel();
+            var serviceCollection = SetUpDependencies();
+
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+
+            var kernel = serviceProvider.GetRequiredService<Kernel>();
 
             kernel.Initialize(connectionFilePath);
 
             _log.Debug("Kernel initialized");
+        }
+
+        private static ServiceCollection SetUpDependencies()
+        {
+            ServiceCollection serviceCollection = new ServiceCollection();
+
+            serviceCollection.AddTransient<IControlSocket, ControlSocket>();
+            serviceCollection.AddTransient<IHeartbeatSocket, HeartbeatSocket>();
+            serviceCollection.AddTransient<IIOPubSocket, IOPubSocket>();
+            serviceCollection.AddTransient<IShellSocket, ShellSocket>();
+            serviceCollection.AddTransient<IStdinSocket, StdinSocket>();
+
+            serviceCollection.AddTransient<Kernel>();
+
+            return serviceCollection;
         }
     }
 }

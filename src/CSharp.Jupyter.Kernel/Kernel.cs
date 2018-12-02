@@ -3,6 +3,10 @@ using System.IO;
 using Newtonsoft.Json;
 using CSharp.Jupyter.Kernel.Sockets.Heartbeat;
 using CSharp.Jupyter.Kernel.Sockets;
+using CSharp.Jupyter.Kernel.Sockets.Control;
+using CSharp.Jupyter.Kernel.Sockets.IOPub;
+using CSharp.Jupyter.Kernel.Sockets.Shell;
+using CSharp.Jupyter.Kernel.Sockets.Stdin;
 
 namespace CSharp.Jupyter.Kernel
 {
@@ -12,7 +16,21 @@ namespace CSharp.Jupyter.Kernel
             .GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         private ConnectionFile _connectionFile;
-        private HeartbeatSocket _heartbeatSocket;
+        private readonly IControlSocket _controlSocket;
+        private readonly IHeartbeatSocket _heartbeatSocket;
+        private readonly IIOPubSocket _iioPubSocket; 
+        private readonly IShellSocket _shellSocket;
+        private readonly IStdinSocket _stdinSocket;
+
+        public Kernel(IControlSocket controlSocket, IHeartbeatSocket heartbeatSocket, IIOPubSocket iioPubSocket, 
+        IShellSocket shellSocket, IStdinSocket stdinSocket)
+        {
+            _controlSocket = controlSocket;
+            _heartbeatSocket = heartbeatSocket;
+            _iioPubSocket = iioPubSocket; 
+            _shellSocket = shellSocket;
+            _stdinSocket = stdinSocket;
+        }
 
         public bool Initialize(string connectionFilePath)
         {
@@ -55,7 +73,11 @@ namespace CSharp.Jupyter.Kernel
         {
             _log.Debug("Setting up Sockets");
 
-            _heartbeatSocket = new HeartbeatSocket(_connectionFile.HeartbeatConnectionString());
+            _controlSocket.Bind(_connectionFile.ControlConnectionString());
+            _heartbeatSocket.Bind(_connectionFile.HeartbeatConnectionString());
+            _iioPubSocket.Bind(_connectionFile.IOPubConnectionString());
+            _shellSocket.Bind(_connectionFile.ShellConnectionString());
+            _stdinSocket.Bind(_connectionFile.StdinConnectionString());
 
             return true;
         }

@@ -2,14 +2,14 @@ using System;
 using NetMQ;
 using NetMQ.Sockets;
 
-namespace CSharp.Jupyter.Kernel.Sockets.Heartbeat
+namespace CSharp.Jupyter.Kernel.Sockets.Stdin
 {
-    public class HeartbeatSocket : IHeartbeatSocket
+    public class StdinSocket : IStdinSocket
     {
-        private readonly ResponseSocket _socket;
-        public HeartbeatSocket()
+        private readonly RouterSocket _socket;
+        public StdinSocket()
         {
-            _socket = new ResponseSocket();
+            _socket = new RouterSocket();
         }
 
         public void Bind(string address)

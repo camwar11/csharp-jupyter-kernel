@@ -6,7 +6,6 @@ namespace CSharp.Jupyter.Messages.Execute
 {
     public class ExecuteReply : GeneralMessage<ExecuteReply.ExecuteReplyContent>
     {
-        [JsonDictionary]
         public class ExecuteReplyContent
         {
             /// <summary>

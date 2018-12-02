@@ -7,7 +7,6 @@ namespace CSharp.Jupyter.Messages.KernelInfo
 {
     public class KernelInfoReply : GeneralMessage<KernelInfoReply.KernelInfoReplyContent>
     {
-        [JsonDictionary]
         public class KernelInfoReplyContent
         {
             /// <summary>
@@ -55,7 +54,6 @@ namespace CSharp.Jupyter.Messages.KernelInfo
             [JsonProperty("help_links")]
             public List<HelpLink> HelpLinks { get; set; }
 
-            [JsonDictionary]
             public class LanguageInfoContent
             {
                 /// <summary>
@@ -108,7 +106,6 @@ namespace CSharp.Jupyter.Messages.KernelInfo
                 public string NbconvertExporter { get; set;}
             }
 
-            [JsonDictionary]
             public class HelpLink
             {
                 /// <summary>

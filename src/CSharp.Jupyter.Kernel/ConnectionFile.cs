@@ -2,7 +2,6 @@ using Newtonsoft.Json;
 
 namespace CSharp.Jupyter.Kernel
 {
-    [JsonDictionary]
     public class ConnectionFile
     {
         [JsonProperty("control_port")]

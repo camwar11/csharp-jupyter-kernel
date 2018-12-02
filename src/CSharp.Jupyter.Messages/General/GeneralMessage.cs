@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 
 namespace CSharp.Jupyter.Messages.General
 {
-    [JsonDictionary]
     public abstract class GeneralMessage<T>
     {
         [JsonProperty("header")]

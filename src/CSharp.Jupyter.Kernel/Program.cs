@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using CSharp.Jupyter.Kernel.Sockets.Control;
 using CSharp.Jupyter.Kernel.Sockets.Heartbeat;
 using CSharp.Jupyter.Kernel.Sockets.IOPub;
@@ -14,12 +16,18 @@ namespace CSharp.Jupyter.Kernel
         private static readonly log4net.ILog _log = log4net.LogManager
             .GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        static void Main(string[] args)
+        internal static void Main(string[] args)
         {
+            log4net.Config.XmlConfigurator.Configure(
+                log4net.LogManager.GetRepository(Assembly.GetEntryAssembly()),
+                new FileInfo("log4net.config"));
+
             if(args.Length != 1)
             {
                 _log.ErrorFormat("Invalid number of args {0}, {1}", args.Length, string.Join(", ", args));
-                Environment.Exit(1);
+
+                Environment.ExitCode = 1;
+                return;
             }
 
             string connectionFilePath = args[0];
@@ -30,7 +38,12 @@ namespace CSharp.Jupyter.Kernel
 
             var kernel = serviceProvider.GetRequiredService<Kernel>();
 
-            kernel.Initialize(connectionFilePath);
+            if(!kernel.Initialize(connectionFilePath))
+            {
+                _log.Error("Kernel failed to initialized.");
+                Environment.ExitCode = 1;
+                return;
+            }
 
             _log.Debug("Kernel initialized");
         }

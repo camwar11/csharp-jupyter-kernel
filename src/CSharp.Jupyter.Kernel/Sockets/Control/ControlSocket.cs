@@ -7,7 +7,7 @@ namespace CSharp.Jupyter.Kernel.Sockets.Control
     public class ControlSocket : IControlSocket
     {
         private readonly RouterSocket _socket;
-        public ControlSocket(string connection)
+        public ControlSocket()
         {
             _socket = new RouterSocket();
         }

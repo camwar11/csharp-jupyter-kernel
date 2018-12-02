@@ -2,7 +2,6 @@ using Newtonsoft.Json;
 
 namespace CSharp.Jupyter.Messages.General
 {
-    [JsonDictionary]
     public class MessageHeader
     {
         [JsonProperty("msg_id")]
